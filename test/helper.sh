@@ -6,10 +6,13 @@ run_restyler_cmd() {
   local paths=()
   local path
 
-  docker run \
+  if ! docker run \
     --rm --net none \
     --volume "$PWD":/code \
-    "restyled/restyler-$name" "$command" "$@" || exit 1
+    "restyled/restyler-$name" "$command" "$@"; then
+    echo "Restyler errored" >&2
+    exit 1
+  fi
 
   for path; do
     if [ -e "$path" ]; then
