@@ -15,3 +15,16 @@ rustfmt
   +    x: f32,
   +    y: f32,
    }
+
+Runs a version with fixed trailing whitespace bug
+
+  $ run_restyler rustfmt -- bug.rs
+  error: left behind trailing whitespace
+   --> /code/bug.rs:1
+    |
+  1 | a_macro!(name<Param1, Param2>, 
+    |                               ^
+  
+  warning: rustfmt may have failed to format. See previous 1 errors.
+  
+
