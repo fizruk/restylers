@@ -5,11 +5,15 @@ run_restyler_cmd() {
 
   local paths=()
   local path
+  local image
 
-  if ! docker run \
-    --rm --net none \
-    --volume "$PWD":/code \
-    "restyled/restyler-$name" "$command" "$@"; then
+  if [ "${USE_MANIFEST:-0}" -eq 1 ]; then
+    image=$(grep "^restyled/restyler-$name:" "$TESTDIR"/../manifest)
+  else
+    image=restyled/restyler-$name:latest
+  fi
+
+  if ! docker run --rm --net none --volume "$PWD":/code "$image" "$command" "$@"; then
     echo "Restyler errored" >&2
     exit 1
   fi
